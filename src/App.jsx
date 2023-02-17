@@ -1,19 +1,39 @@
-import { useEffect } from "react";
-import getPlaylists from "./api";
+import { Button, CssBaseline, Stack } from "@mui/material";
+import { Container } from "@mui/system";
+import Navbar from "./components/Navbar/Navbar";
+import PlaylistCard from "./components/PlaylistCard/PlaylistCard";
 import usePlaylists from "./hooks/usePlaylists";
 
+
 const App = () => {
-    const { playlists, getPlaylistById } = usePlaylists()
+    const { getPlaylistById, playlists, error } = usePlaylists()
 
-    useEffect(() => {
-        getPlaylistById("PL_XxuZqN0xVAu_dWUVFbscqZdTzE8t6Z1")
-    }, [])
+    const playlistArray = Object.values(playlists);
 
-    console.log("playlists", playlists);
+    console.log(playlistArray);
+
+
     return (
-        <div>
-            <h2>Hello fresh you tube</h2>
-        </div>
+        <>
+            <CssBaseline />
+            <Navbar getPlaylistById={getPlaylistById} />
+            <Container maxWidth={'lg'} sx={{ marginTop: 2 }}>
+                <Stack direction="row" spacing={2}>
+                    {
+                        playlistArray.length > 0 && playlistArray.map(({ playlistThumbnail, playlistTitle, playlistDescription, id, channelTitle }) => {
+
+                            return <PlaylistCard
+                                key={id}
+                                channelTitle={channelTitle}
+                                playlistThumbnail={playlistThumbnail}
+                                playlistTitle={playlistTitle}
+                                playlistDescription={playlistDescription}
+                            />
+                        })
+                    }
+                </Stack>
+            </Container>
+        </>
     );
 };
 

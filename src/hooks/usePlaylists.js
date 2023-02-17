@@ -1,5 +1,5 @@
 import { useState } from "react"
-import getPlaylists from "../api"
+import getPlaylists from "../api/getPlaylist"
 
 const usePlaylists = () => {
 
@@ -8,43 +8,31 @@ const usePlaylists = () => {
         recentPlaylists: [],
         favourites: []
     })
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const getPlaylistById = async (playlistId, force = false) => {
-        /*     if (state.playlists[playlistId] && !force) {
-                return;
-            } */
-        let result = await getPlaylists(playlistId);
-        let cId, ct;
+        if (state.playlists[playlistId] && !force) {
+            return;
+        }
+        setLoading(true)
 
-        result = result.map(({ snippet: { channelId, title, description, thumbnails: { medium }, channelTitle }, contentDetails }) => {
-            if (!cId) {
-                cId = channelId;
-            }
-
-            if (!ct) {
-                ct = channelTitle
-            }
-
-            return {
-                title,
-                description,
-                thumbnails: medium,
-                contentDetails
-            }
-        })
-
-        setState((prev) => ({
-            ...prev,
-            playlists: {
-                ...prev.playlists,
-                [playlistId]: {
-                    items: result,
-                    playlistId,
-                    channelId: cId,
-                    channelTitle: ct
+        try {
+            const playlist = await getPlaylists(playlistId);
+            setState(prev => ({
+                ...prev,
+                playlists: {
+                    ...prev.playlists,
+                    [playlistId]: playlist
                 }
-            }
+            }))
+            setError('')
+        } catch (e) {
+            setError(e.response.data.error.message || 'Something unknown error happend!!');
+        } finally {
+            setLoading(false)
+        }
 
-        }))
+
     }
 
     const addToFavourites = (playlistId) => {
@@ -70,7 +58,9 @@ const usePlaylists = () => {
         recentPlaylists: getPlaylistsByIds(state.recentPlaylists),
         getPlaylistById,
         addToFavourites,
-        addToRecent
+        addToRecent,
+        loading,
+        error
     }
 }
 
