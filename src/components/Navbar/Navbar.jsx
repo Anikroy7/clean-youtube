@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -8,7 +10,10 @@ import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { deepOrange } from '@mui/material/colors';
 import PlaylistModal from '../playlistModal/PlaylistModal';
-const Navbar = ({ getPlaylistById }) => {
+
+
+
+const Navbar = () => {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -19,9 +24,7 @@ const Navbar = ({ getPlaylistById }) => {
         setOpen(false);
     };
 
-    const getPlaylistId = (playlistId) => {
-        getPlaylistById(playlistId)
-    }
+
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -29,16 +32,21 @@ const Navbar = ({ getPlaylistById }) => {
                 <Container maxWidth='lg'>
                     <Toolbar>
                         <Stack sx={{ flexGrow: 1 }}>
-                            <Typography
-                                sx={{ color: "red" }}
-                                variant='h4'>
-                                Fresh YouTube
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                            >
-                                By Anik roy
-                            </Typography>
+                            <Link component={RouterLink} to="/" sx={{ textDecoration: "none" }}>
+                                <Typography
+                                    sx={{ color: "red" }}
+                                    variant='h4'>
+                                    Fresh YouTube
+                                </Typography>
+
+                            </Link>
+                            <Link href='https://www.linkedin.com/in/anik-roy-a14185241/' target={'_blank'}>
+                                <Typography
+                                    variant="body1"
+                                >
+                                    By Anik roy dfd
+                                </Typography>
+                            </Link>
                         </Stack>
                         <Button
                             variant='contained'
@@ -59,7 +67,6 @@ const Navbar = ({ getPlaylistById }) => {
             <PlaylistModal
                 open={open}
                 handleClose={handleClose}
-                getPlaylistId={getPlaylistId}
             />
         </Box>
     );

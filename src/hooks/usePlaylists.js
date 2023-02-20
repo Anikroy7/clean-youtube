@@ -1,34 +1,32 @@
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { useEffect, useState } from "react"
 import getPlaylists from "../api/getPlaylist"
 import storage from "../utils/storage";
 
-const STORAGE_KEY = 'cl_001'
+f
 
-const init = {
+/* const init = {
     playlists: {},
     recentPlaylists: [],
     favourites: []
 }
-
+ */
 const usePlaylists = () => {
-    const [error, setError] = useState('');
+    /* const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [state, setState] = useState(init)
-
-
-    console.log(state === init);
-
+    const [state, setState] = useState(init) */
+    const { getPlaylistData, addPlaylist, setError, setLoading } = useStoreActions((actions) => actions.playlists);
+    const state = useStoreState((state) => state.playlists)
+    console.log(state);
     useEffect(() => {
         const state = storage.get(STORAGE_KEY);
-        console.log('state 1', state);
         if (state) {
-            setState({ ...state })
+            addPlaylist({ ...state })
         }
     }, [])
 
     useEffect(() => {
         if (state !== init) {
-            console.log('hello', state);
             storage.set(STORAGE_KEY, state)
         }
     }, [state])

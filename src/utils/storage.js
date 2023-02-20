@@ -1,3 +1,4 @@
+
 class Storage {
     set(key, data) {
         localStorage.setItem(key, JSON.stringify(data))

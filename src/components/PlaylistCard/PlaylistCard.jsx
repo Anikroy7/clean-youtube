@@ -3,16 +3,18 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import { Link } from 'react-router-dom'
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { PlayCircle, PlayCircleFilledOutlined } from '@mui/icons-material';
 import { Box } from '@mui/system';
+import { Button } from '@mui/material';
 
 
 
 
-const PlaylistCard = ({ playlistDescription, playlistTitle, playlistThumbnail, channelTitle }) => {
+const PlaylistCard = ({ playlistTitle, playlistThumbnail, channelTitle, playlistId }) => {
     return (
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
             <CardMedia
@@ -34,20 +36,24 @@ const PlaylistCard = ({ playlistDescription, playlistTitle, playlistThumbnail, c
                 <IconButton aria-label="add to favorites">
                     <FavoriteIcon />
                 </IconButton>
-                <IconButton aria-label="share">
-                    <PlayCircle sx={{ marginRight: 0 }} color='error' />
-                </IconButton>
-                <Typography sx={{
-                    '&:hover': {
-                        color: 'red',
-                        cursor: "pointer"
-                    },
-                }} variant='body1'>
-                    Get Started
-                </Typography>
+
+                <Button to={`/player/${playlistId}`} component={Link}>
+                    <IconButton aria-label="share">
+                        <PlayCircle sx={{ marginRight: 0 }} color='error' />
+                    </IconButton>
+                    <Typography sx={{
+                        '&:hover': {
+                            color: 'red',
+                            cursor: "pointer"
+                        },
+                    }} variant='body1'>
+                        Get Started
+                    </Typography>
+
+                </Button>
             </CardActions>
         </Card>
-    );
-}
+    )
+};
 
 export default PlaylistCard;
